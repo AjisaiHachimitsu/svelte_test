@@ -1,10 +1,36 @@
 <script lang="ts">
-	export let name: string;
+	//export let name: string;
+	import TodoInputForm from './ToDoInputForm.svelte';
+  import ToDoList from './ToDoList.svelte';
+	let firstName="";
+	let lastName="";
+	let nameEntered=false;
+	$:fullName=firstName+'　'+lastName;
+  function handleSubmit()
+  {
+    if(lastName&&firstName) nameEntered=true;
+  }
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<!-- <p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p> -->
+	{#if nameEntered}
+	<h1>タスクリストアプリケーションへようこそ、{fullName}さん!</h1>
+	<TodoInputForm userName={fullName} />
+  <ToDoList />
+	{:else}
+	<h1>タスクリストアプリケーションへようこそ!</h1>
+  <h3>名前を入力してください。</h3>
+  <form on:submit|preventDefault={handleSubmit} >
+  <div>
+    <input bind:value={lastName} type="text" placeholder="姓" required>
+  </div>
+  <div>
+    <input bind:value={firstName} type="text" placeholder="名" required>
+  </div>
+  <button type="submit">タスク管理を始める</button>
+  </form>
+  {/if}
 </main>
 
 <style>
